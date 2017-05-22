@@ -1,0 +1,3 @@
+import vectorOperations
+import plotFunctions
+from Word2VecModel import Word2VecModel
