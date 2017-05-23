@@ -1,4 +1,3 @@
-from __future__ import division
 from gensim.models import word2vec
 from gensim.models.phrases import Phrases
 from gensim import models

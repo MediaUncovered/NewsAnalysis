@@ -1,16 +1,16 @@
+from __future__ import division
 from numpy import dot,sqrt
 
-def euclideanNorm(v):
+def euclideanNorm(v,v2=None):
+    if v2:
+        v = subtract(v,v2)
     return sqrt(sum(square(v)))
 
-def l2norm(v1,v2):
-    return sqrt(sum(square(substract(v1,v2))))
-
-def substract(v1,v2):
+def subtract(v1,v2):
     return [i-j for i,j in zip(v1,v2)]
 
 def square(v):
     return [i**2 for i in v]
 
-def cosSimilarity(vec1,vec2):
-    return dot(vec1,vec2)/(euclideanNorm(vec1)*euclideanNorm(vec2))
+def cosSimilarity(v1,v2):
+    return dot(v1,v2)/(euclideanNorm(v1)*euclideanNorm(v2))
