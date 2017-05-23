@@ -1,0 +1,8 @@
+gensim==0.13.3
+matplotlib==1.5.1
+numpy==1.11.2
+Pattern==2.6
+wordcloud==1.2.1
+pygal==2.3.1
+
+
