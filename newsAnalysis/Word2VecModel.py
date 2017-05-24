@@ -7,12 +7,11 @@ from numpy import dot,sqrt,mean,subtract
 
 class Word2VecModel:
 
-    def __init__(self, sentences=None, num_features=100, min_word_count=5, context=5):
+    def __init__(self, sentences=None, size=100, min_word_count=5, context=5):
         self.model = word2vec.Word2Vec()
-        self.vocabulary = {}
         if sentences: 
-            self.train(sentences, num_features=num_features, min_word_count=min_word_count, context=context)
-            self.getVocabulary()
+            self.model = word2vec.Word2Vec(sentences, size=size, min_count= min_word_count, window=context) 
+        self.getVocabulary()
 
     
     def load(self, path):

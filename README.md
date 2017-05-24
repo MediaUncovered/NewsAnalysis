@@ -2,7 +2,7 @@
 
 Newspaper mapping with word embeddings.
 
-## Install depdencies
+## Install dependencies
 To install the dependencies make sure you have [Python 2.7](https://www.python.org/download/releases/2.7/) and [pip](https://pip.pypa.io/en/stable/) installed. Clone or download the repository.
 
 Upgrade pip:
