@@ -22,12 +22,12 @@ class test_Word2VecModel(unittest.TestCase):
         self.w2v = Word2VecModel(sentences, min_word_count=1)
 
 
-    def test_initEmpty(self):
+    def test_init_empty(self):
         w2v = Word2VecModel()
         self.assertEqual(w2v.vocabulary, [])
         self.assertEqual(w2v.model.__str__(), word2vec.Word2Vec().__str__())
 
-    def test_initSentences(self):
+    def test_init_sentences(self):
         self.assertEqual(self.w2v.model.__str__(), word2vec.Word2Vec(sentences, min_count=1).__str__())
         self.assertItemsEqual(self.w2v.vocabulary, vocabulary)
 
@@ -65,6 +65,11 @@ class test_Word2VecModel(unittest.TestCase):
         self.assertTrue(isinstance(wordTuple[1], float))
         self.assertTrue(dissimilarWords[0][1] < dissimilarWords[1][1]) 
         self.assertTrue(dissimilarWords[1][1] < dissimilarWords[2][1]) 
+
+    
+    
+    
+        
 
 
 

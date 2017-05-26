@@ -2,9 +2,8 @@ from gensim.models import word2vec
 from gensim.models.phrases import Phrases
 from gensim import models
 import numpy as np
-import matplotlib.pyplot as plt
 from numpy import dot,mean
-
+import tupleListUtils as tup
 
 
 class Word2VecModel:
@@ -24,18 +23,7 @@ class Word2VecModel:
     def isString(self, elem):
         return type(elem)==str 
 
-    def filterSimilarity(self, similarities, threshold=0.25, absolutValue=True):
-        if absolutValue:
-            return [(score,ind) for ind,score in enumerate(similarities) if abs(score)>threshold]   
-        return [(score,ind) for ind,score in enumerate(similarities) if score>threshold]
-
-    def getTopNWords(self, scoreList, topn=10):
-        scoreList.sort()
-        dissimilar = [(self.model.index2word[elem[1]], elem[0]) for elem in scoreList[0:topn] if elem<0]
-        similar = [(self.model.index2word[elem[1]], elem[0]) for elem in scoreList[-topn:-1] if elem >0]
-        return [similar, dissimilar]
-
-
+    
     def keywordCosSimilarity(self,vec,keywords):
         if type(vec)==str:
             vec = self.word2Vector(vec)
@@ -47,17 +35,8 @@ class Word2VecModel:
     def keywordProjection(self, vec, keywords):
         return [self.scalarProjection(word, vec) for word in keywords]
 
-    
-
-    def getMostSimilarAndDisimilar(self, vector, threshold=0.25, restrict_vocab=3000, topn=20):
-        similarities = self.model.similar_by_vector(vector, topn=False, restrict_vocab=restrict_vocab)
-        filteredSimilarity = self.filterSimilarity(similarities, threshold=threshold)
-        return self.getTopNWords(filteredSimilarity, topn)
-
 
     def getMostSimilar(self,vector,threshold=0.75,restrict_vocab=5000):
-        if type(vector) == str:
-            vector = self.word2Vector(vector)
         similarities = self.model.similar_by_vector(vector, topn=False, restrict_vocab = restrict_vocab)
         filtered = self.filterSimilarity(similarities, threshold = threshold)
         wordList = [(self.model.index2word[elem[1]], elem[0]) for elem in filtered if elem[0]<1]
@@ -102,25 +81,19 @@ class Word2VecModel:
 
 
     def averageWords(self, wordList):
-        vectors = [self.model[word] for word in wordList if word in self.vocabulary]
+        vectors = [self.word2Vector(word) for word in wordList if word in self.vocabulary]
         return mean(vectors, axis=0)
         
     
     def distanceMatrix(model, vocabulary):
         distanceMatrix = np.zeros([len(vocabulary), len(vocabulary)])
     
-    def doesntMatch(self, wordList): 
-        return self.model.doesnt_match(wordList) 
-    
-    def analogy(self):
-        self.model.most_similar(['russia', 'washington'],['u.s.'], topn=3)
-
     def getSimilarWords(self, word, topn=10):
         return self.model.most_similar(word, topn=topn)
 
     def getDissimilarWords(self, word, topn=10):
         vocabLength = len(self.vocabulary)
-        similarWords = self.model.most_similar(word, topn=vocabLength)
-        dissimilarWords = sorted(similarWords, key=lambda x:(-x[1], x[0]), reverse=True)
+        similarWords = self.getSimilarWords(word, topn=vocabLength)
+        dissimilarWords = tup.sortByScore(similarWords) 
         return dissimilarWords[:topn]
 
