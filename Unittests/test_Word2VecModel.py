@@ -50,21 +50,36 @@ class test_Word2VecModel(unittest.TestCase):
         wordTuple = similarWords[0]
         self.assertTrue(len(similarWords), 3)
         self.assertTrue(isinstance(wordTuple, tuple))
-        self.assertTrue(isinstance(wordTuple[0], str))
+        self.assertTrue(isinstance(wordTuple[0], basestring))
         self.assertTrue(isinstance(wordTuple[1], float))
         self.assertTrue(similarWords[0][1] > similarWords[1][1]) 
         self.assertTrue(similarWords[1][1] > similarWords[2][1]) 
 
+
+    def test_getSimilarWords_threshold(self):
+        similarWords = self.w2v.getSimilarWords('human', threshold=0.05)
+        for word, score in similarWords:
+            self.assertTrue(score >= 0.05)
+        self.assertTrue(similarWords[0][1] > similarWords[1][1]) 
+        
+
     def test_getDissimilarWords(self): 
         dissimilarWords = self.w2v.getDissimilarWords('human', 3)
-        print dissimilarWords
         wordTuple = dissimilarWords[0]
         self.assertTrue(len(dissimilarWords), 3)
         self.assertTrue(isinstance(wordTuple, tuple))
-        self.assertTrue(isinstance(wordTuple[0], str))
+        self.assertTrue(isinstance(wordTuple[0], basestring))
         self.assertTrue(isinstance(wordTuple[1], float))
         self.assertTrue(dissimilarWords[0][1] < dissimilarWords[1][1]) 
         self.assertTrue(dissimilarWords[1][1] < dissimilarWords[2][1])
+
+
+    def test_getDissimilarWords_threshold(self):
+        similarWords = self.w2v.getDissimilarWords('human', topn=5, threshold=-0.05)
+        for word, score in similarWords:
+            self.assertTrue(score <= -0.05)
+        self.assertTrue(similarWords[0][1] < similarWords[1][1]) 
+
         
     def test_getVector(self):
         vector = self.w2v.getVector('human')

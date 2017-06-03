@@ -9,15 +9,22 @@ import vectorOperations as vecOp
 
 class Word2VecModel:
 
-    def __init__(self, sentences=None, size=100, min_word_count=5, context=5):
+    def __init__(self, sentences=None, size=100, min_word_count=5, context=5, bigrams=True):
         self.model = word2vec.Word2Vec()
         if sentences: 
+            if bigrams:
+                bigramBuilder = Phrases(sentences)
+                sentences = bigramBuilder[sentences]
             self.model = word2vec.Word2Vec(sentences, size=size, min_count= min_word_count, window=context) 
         self.setVocabulary()
-    
+
     def load(self, path):
         self.model = models.Word2Vec.load_word2vec_format(path, binary=False)
-        self.vocabulary = self.model.vocab
+        self.setVocabulary()
+
+    def setVocabulary(self):
+        self.vocabulary = list(self.model.vocab.keys())
+        self.vocabulary.sort()
 
     def cosSimilarity(self, elem1, elem2):
         vec1 = self.getVector(elem1)
@@ -27,20 +34,6 @@ class Word2VecModel:
     def cosSimilarityList(self, word, wordList):
         return [self.cosSimilarity(word, elem) for elem in wordList]
     
-    def getMostSimilar(self,vector,threshold=0.75,restrict_vocab=5000):
-        similarities = self.model.similar_by_vector(vector, topn=False, restrict_vocab = restrict_vocab)
-        filtered = self.filterSimilarity(similarities, threshold = threshold)
-        wordList = [(self.model.index2word[elem[1]], elem[0]) for elem in filtered if elem[0]<1]
-        return wordList 
-        
-    def train(self, sentences, num_features, min_word_count, context):
-        bigram_transformer = Phrases(sentences)
-        self.model = word2vec.Word2Vec(bigram_transformer[sentences], size=num_features, min_count = min_word_count, window=context)
-
-    def setVocabulary(self):
-        self.vocabulary = list(self.model.vocab.keys())
-        self.vocabulary.sort()
-
     def generateAnalogies(self, word1, word2, basis):
         vec1 = self.word2Vector(word1)
         vec2 = self.word2Vector(word2)
@@ -51,13 +44,19 @@ class Word2VecModel:
         vectors = [self.word2Vector(word) for word in wordList if word in self.vocabulary]
         return mean(vectors, axis=0)
    
-    def getSimilarWords(self, word, topn=10):
-        return self.model.most_similar(word, topn=topn)
+    def getSimilarWords(self, word, topn=10, threshold=None):
+        vocabLength = len(self.vocabulary)
+        similarWords = self.model.most_similar(word, topn=vocabLength)
+        if threshold:
+            return [(word, score) for (word, score) in similarWords if score>=threshold]
+        return similarWords[:topn] 
 
-    def getDissimilarWords(self, word, topn=10):
+    def getDissimilarWords(self, word, topn=10, threshold=None):
         vocabLength = len(self.vocabulary)
         similarWords = self.getSimilarWords(word, topn=vocabLength)
         dissimilarWords = tup.sortByScore(similarWords) 
+        if threshold:
+            return [(word, score) for (word, score) in dissimilarWords if score<=threshold]
         return dissimilarWords[:topn]
 
     def isString(self, elem):
