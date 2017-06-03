@@ -64,14 +64,36 @@ class test_Word2VecModel(unittest.TestCase):
         self.assertTrue(isinstance(wordTuple[0], str))
         self.assertTrue(isinstance(wordTuple[1], float))
         self.assertTrue(dissimilarWords[0][1] < dissimilarWords[1][1]) 
-        self.assertTrue(dissimilarWords[1][1] < dissimilarWords[2][1]) 
-
-    
-    
-    
+        self.assertTrue(dissimilarWords[1][1] < dissimilarWords[2][1])
         
+    def test_getVector(self):
+        vector = self.w2v.getVector('human')
+        self.assertTrue(len(vector), 100)
+        self.assertEqual(type(vector), np.ndarray)
+
+        vec = np.array([0.01, 0.04, 0.23])
+        self.assertTrue(np.array_equal(self.w2v.getVector(vec), vec))
+
+    def test_cosSimilarity_vec_vec(self):
+        cosSim = self.w2v.cosSimilarity([0,1], [0,4])
+        self.assertAlmostEqual(cosSim, 1)
 
 
+    def test_cosSimilarity_word_word(self):
+        cosSim = self.w2v.cosSimilarity('human', 'computer')
+        self.assertTrue(type(cosSim), float)
+
+    
+    def test_cosSimilarity_word_vec(self):
+        randVec = np.random.rand(100)
+        cosSim = self.w2v.cosSimilarity('human', randVec)
+        cosSim_rev = self.w2v.cosSimilarity(randVec, 'human')
+        self.assertAlmostEqual(cosSim, cosSim_rev)
+
+
+    def test_cosSimilarityList(self):
+        cosSims = self.w2v.cosSimilarityList([0,1], [[0,4], [1,0]])
+        self.assertAlmostEqual(cosSims, [1, 0])
 
 
 if __name__ == '__main__':
