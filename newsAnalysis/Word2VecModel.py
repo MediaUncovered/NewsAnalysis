@@ -1,8 +1,4 @@
-from gensim.models import word2vec
-from gensim.models.phrases import Phrases
-from gensim import models
-import numpy as np
-from numpy import dot,mean
+from gensim.models import word2vec, phrases, Word2Vec
 import tupleListUtils as tup
 import vectorOperations as vecOp
 
@@ -13,13 +9,13 @@ class Word2VecModel:
         self.model = word2vec.Word2Vec()
         if sentences: 
             if bigrams:
-                bigramBuilder = Phrases(sentences)
+                bigramBuilder = phrases.Phrases(sentences)
                 sentences = bigramBuilder[sentences]
             self.model = word2vec.Word2Vec(sentences, size=size, min_count= min_word_count, window=context) 
         self.setVocabulary()
 
     def load(self, path):
-        self.model = models.Word2Vec.load_word2vec_format(path, binary=False)
+        self.model = Word2Vec.load_word2vec_format(path, binary=False)
         self.setVocabulary()
 
     def setVocabulary(self):
@@ -34,15 +30,9 @@ class Word2VecModel:
     def cosSimilarityList(self, word, wordList):
         return [self.cosSimilarity(word, elem) for elem in wordList]
     
-    def generateAnalogies(self, word1, word2, basis):
-        vec1 = self.word2Vector(word1)
-        vec2 = self.word2Vector(word2)
-        diff = self.substract(vec1, vec2)
-        return dot(diff,basis)/self.euclideanNorm(diff)
-    
     def averageWords(self, wordList):
-        vectors = [self.word2Vector(word) for word in wordList if word in self.vocabulary]
-        return mean(vectors, axis=0)
+        vectors = [self.getVector(word) for word in wordList if word in self.vocabulary]
+        return vecOp.vectorMean(vectors, axis=0)
    
     def getSimilarWords(self, word, topn=10, threshold=None):
         vocabLength = len(self.vocabulary)

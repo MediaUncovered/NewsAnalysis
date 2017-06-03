@@ -31,6 +31,11 @@ class test_vectorOperations(unittest.TestCase):
         self.assertEqual(vecOp.vectorProjection([4,0], basis), 4)
         self.assertEqual(vecOp.vectorProjection([1,2], basis), 1)
 
+    def test_mean(self):
+        vec = [[2,3,1,4], [1,1,9,4], [6,2,2,4]]
+        mean = [3,2,4,4]
+        self.assertTrue((vecOp.vectorMean(vec)==mean).all())
+
 
 if __name__ == '__main__':
     unittest.main()
