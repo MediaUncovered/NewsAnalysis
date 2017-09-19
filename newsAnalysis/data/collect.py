@@ -2,7 +2,7 @@
 '''
 Handles transport of big data for analysis
 '''
-from data import model
+from data.model import Article
 import unicodecsv as csv
 import os
 
@@ -28,11 +28,11 @@ def download_articles_to_file(session, file_path, source_id=1):
                 last_id = int(row[0])
     print ("found latest id %d" % last_id)
 
-    query = session.query(model.Article)\
-                .filter(model.Article.body.isnot(None))\
-                .filter(model.Article.id >= last_id)\
-                .filter(model.Article.source_id == source_id)\
-                .order_by(model.Article.id)\
+    query = session.query(Article)\
+                .filter(Article.body.isnot(None))\
+                .filter(Article.id >= last_id)\
+                .filter(Article.source_id == source_id)\
+                .order_by(Article.id)\
                 .yield_per(10)
 
     with open(file_path, "ab") as f:
@@ -42,3 +42,16 @@ def download_articles_to_file(session, file_path, source_id=1):
             writer.writerow(
                 [article.id, article.source_id, article.published, article.title, article.body]
             )
+
+
+def articles_in_file(file_path):
+    '''
+    file_path : String
+        The path of the file to read from.
+    '''
+    with open(file_path, "rb") as f:
+        reader = csv.reader(f, encoding='utf-8')
+        for row in reader:
+            article = Article(id=row[0], source_id=row[1],
+                                    published=row[2], title=row[3], body=row[4])
+            yield article
