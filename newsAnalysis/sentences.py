@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from nltk.tokenize import sent_tokenize, word_tokenize
-from data import collect
+from datastore import collect
 
 
 def open(path):
