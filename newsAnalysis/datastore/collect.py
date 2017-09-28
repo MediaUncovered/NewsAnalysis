@@ -24,7 +24,8 @@ def download_articles_to_file(session, file_path, source_id=1, limit=None):
     print ("detecting latest id")
     downloaded_articles_count = 0
     last_id = 0
-    if os.path.isfile(file_path):
+    file_exists = os.path.isfile(file_path)
+    if file_exists:
         with open(file_path, "rb") as f:
             reader = csv.reader(f)
             for row in reader:
@@ -49,6 +50,8 @@ def download_articles_to_file(session, file_path, source_id=1, limit=None):
 
         with open(file_path, "ab") as f:
             writer = csv.writer(f, encoding='utf-8')
+            if not file_exists:
+                writer.writerow(['id', 'source_id', 'published', 'title', 'body'])
             for article in query:
                 print("%d" % (article.id))
                 writer.writerow(
