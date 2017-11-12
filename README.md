@@ -26,18 +26,29 @@ mkdir models
 - *newsAnalysis/evaluateScript.py* computes the accuracy of a word embedding model. Google generated analogies that show how well a model has learnt the relations in a specific field, e.g. *Tokyo:Japan::Oslo:Norway*, *sister:brother::niece:nephew*, etc. Besides semantic relations also word forms are tested, e.g. *sleeping:slept::dancing:danced*, *cool:coolest::weird:weirdest*, etc.
 To load the model the number of documents is required.
 
-We recommend to create a shell script to specify the parameters and execute the scripts:
+We recommend to create a shell or python script to specify the parameters and execute the different steps:
+
 ```
+from createDatabase import createDatabase
+from createModel import createModel
+from evaluateModel import evaluateModel
+
 DB='DatabaseName'
 HOST='HostName'
 PORT=PortNumber
 USER='UserName'
-PASSWORD='password'
+PASSWORD='Password'
 
 NR_DOCS=100000
 
-python createModel.py $NR_DOCS $DB $HOST $PORT $USER $PASSWORD
-python evaluateModel.py $NR_DOCS
+name = 'dataName' + str(NR_DOCS)
+data_path ='./data/' + name + '.csv'
+model_path ='./models/' + name
+
+createDatabase(DB, HOST, PORT, USER, PASSWORD, data_path, NR_DOCS)
+createModel(data_path, model_path)
+evaluateModel(model_path)
+
 ```
 
 

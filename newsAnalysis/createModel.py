@@ -1,7 +1,40 @@
 from sys import argv
+<<<<<<< 3fb7d2efdc4ef9e4ebbfe46ca260a1d18209df42
 import sentences
 import gensim
 import logging
+||||||| merged common ancestors
+from Sentences import Sentences
+import gensim, logging
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+
+
+DATABASE = argv[3]
+HOST = argv[3]
+PORT = argv[4]
+USER = argv[5]
+PASSWORD = argv[6]
+
+=======
+<<<<<<< Updated upstream
+from Sentences import Sentences
+import gensim, logging
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+=======
+import sentences
+import gensim
+import logging
+import pdb
+>>>>>>> Stashed changes
+
+
+DATABASE = argv[2]
+HOST = argv[3]
+PORT = argv[4]
+USER = argv[5]
+PASSWORD = argv[6]
+
+>>>>>>> commit changes from feature branch
 
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
@@ -28,6 +61,27 @@ def createModel(file_path, output_file_path):
 
 
 if __name__=='__main__':
+<<<<<<< 3fb7d2efdc4ef9e4ebbfe46ca260a1d18209df42
     input_file_path = argv[1]
     output_file_path = argv[2]
     createModel(input_file_path, output_file_path)
+||||||| merged common ancestors
+    nrDocs = int(argv[1])
+    createModel(nrDocs)
+
+
+
+=======
+<<<<<<< Updated upstream
+    nrDocs = int(argv[1])
+    createModel(nrDocs)
+
+
+
+=======
+    pdb.set_trace()
+    input_file_path = argv[1]
+    output_file_path = argv[2]
+    createModel(input_file_path, output_file_path)
+>>>>>>> Stashed changes
+>>>>>>> commit changes from feature branch
