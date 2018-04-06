@@ -51,12 +51,3 @@ evaluateModel(model_path)
 
 ```
 
-
-## Testing
-The folder *Unittests* contains the tests corresponding to each module. [*nose*](http://nose.readthedocs.org/) provides an easy way to run all tests together. <br  />
-
-Run the tests with:
-```
-nosetests Unittests/
-```
-
