@@ -43,11 +43,17 @@ NR_DOCS=100000
 
 name = 'dataName' + str(NR_DOCS)
 data_path ='./data/' + name + '.csv'
-model_path ='./models/' + name
 
-createDatabase(DB, HOST, PORT, USER, PASSWORD, data_path, NR_DOCS)
-createModel(data_path, model_path)
-evaluateModel(model_path)
+if not os.path.exists(data_path):
+    createDatabase(DB, HOST, PORT, USER, PASSWORD, data_path, NR_DOCS)
 
+model = Model(name)
+if model.exists():
+    model.load()
+else:
+    model.create(data_path)
+    model.save()
+
+model.evaluate()
 ```
 
