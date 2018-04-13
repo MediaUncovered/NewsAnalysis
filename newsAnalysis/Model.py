@@ -3,6 +3,7 @@ import logging
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 import sentences
 import os
+import csv
 
 class Model:
 
@@ -24,6 +25,24 @@ class Model:
         ''' evaluates the semantic concepts a Word2Vec model has learned based on analogies, e.g. sister:brother :: daughter:son, in specific categories (e.g. currencies, verb forms, family, country capitals, etc.) '''
         evaluationFile = 'questions-words.txt'
         self.accuracy = self.w2v_model.wv.accuracy(evaluationFile)
+
+
+    def to_tsv(self):
+        self.vectors2tsv()
+        self.vocab2tsv()
+
+
+    def vectors2tsv(self):
+        with open(self.model_path + '.tsv', 'wb') as f:
+            writer = csv.writer(f, delimiter='\t', lineterminator='\n')
+            writer.writerows(self.w2v_model.wv.vectors)
+        f.close()
+
+
+    def vocab2tsv(self):
+        with open(self.model_path + '_metadata.tsv', 'wb') as f:
+            f.write('\n'.join(self.w2v_model.wv.vocab.keys()))
+        f.close()
 
 
     def exists(self):

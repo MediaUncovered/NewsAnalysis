@@ -55,5 +55,6 @@ else:
     model.save()
 
 model.evaluate()
+model.to_tsv()
 ```
 
