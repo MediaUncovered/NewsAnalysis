@@ -41,7 +41,9 @@ class Model:
 
     def vocab2tsv(self):
         with open(self.model_path + '_metadata.tsv', 'wb') as f:
-            f.write('\n'.join(self.w2v_model.wv.vocab.keys()))
+            vocab = self.w2v_model.wv.vocab.keys()
+            vocabWithLineSeparator = [word + '\n' for ind,word in enumerate(vocab) if ind<len(vocab)-1]
+            f.writelines(vocabWithLineSeparator)
         f.close()
 
 
