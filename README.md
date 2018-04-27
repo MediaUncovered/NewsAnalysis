@@ -20,11 +20,13 @@ mkdir models
 ```
 
 ## Word Embeddings
+- *newsAnalysis/createDatabase.py* accesses a SQL database to write the first n articles with information about title, text, the date of publication, article and newspaper id to a csv file.To connect to the database provide its name, host, port, user and password have to be provided.
 
-- *newsAnalysis/createModel.py* trains a word embedding based on documents stored in a database. To connect to the database the user has to provide its name, host, port, user and password. Together with the desired number of documents used for training the word embeddings, these properties are the input arguments of the function.
+- *newsAnalysis/Model.py* trains a word embedding, fasttext or word2vec, based on documents stored in a csv file.
+Google generated analogies that show how well a model has learnt the relations in a specific field, e.g. *Tokyo:Japan::Oslo:Norway*, *sister:brother::niece:nephew*, etc. Besides semantic relations also word forms are tested, e.g. *sleeping:slept::dancing:danced*, *cool:coolest::weird:weirdest*, etc. With *evaluate()* the results of the trained word embedding model are displayed
+Storing a model in a tsv file enable its visualization with the [tensorflow embedding proyector](
+://projector.tensorflow.org/).
 
-- *newsAnalysis/evaluateScript.py* computes the accuracy of a word embedding model. Google generated analogies that show how well a model has learnt the relations in a specific field, e.g. *Tokyo:Japan::Oslo:Norway*, *sister:brother::niece:nephew*, etc. Besides semantic relations also word forms are tested, e.g. *sleeping:slept::dancing:danced*, *cool:coolest::weird:weirdest*, etc.
-To load the model the number of documents is required.
 
 We recommend to create a shell or python script to specify the parameters and execute the different steps:
 
@@ -47,7 +49,9 @@ data_path ='./data/' + name + '.csv'
 if not os.path.exists(data_path):
     createDatabase(DB, HOST, PORT, USER, PASSWORD, data_path, NR_DOCS)
 
-model = Model(name)
+# use either fasttext or word2vec as modelType
+model = Model(name=name, modelType='fasttext')
+
 if model.exists():
     model.load()
 else:

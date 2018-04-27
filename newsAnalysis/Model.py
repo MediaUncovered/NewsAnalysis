@@ -1,4 +1,4 @@
-from gensim.models import Word2Vec
+from gensim.models import Word2Vec, FastText
 import logging
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 import sentences
@@ -7,24 +7,28 @@ import csv
 
 class Model:
 
-    def __init__(self, name='wordEmbedding'):
+    def __init__(self, name='wordEmbedding', modelType='word2vec'):
         self.name = name
-        self.model_path = './models/' + name
+        self.modelType = modelType
+        self.model_path = './models/' + name + '_' + self.modelType
 
 
     def create(self, data_path):
-        ''' Uses Gensim to train a Word2Vec Model
+        ''' Uses Gensim to train a word embedding Model, either fasttext or word2vec are possible.
         file_path points to a csv file containing articles with the text of newspaper articles in a column called body
         '''
-        self.w2v_model = Word2Vec(min_count=8, window=5, workers=4, size=300, alpha=0.05, negative=10)
-        self.w2v_model.build_vocab(sentences.open(data_path))
-        self.w2v_model.train(sentences.open(data_path), total_examples=self.w2v_model.corpus_count, epochs=self.w2v_model.iter)
+        if self.modelType=='word2vec':
+            self.word_embedding = Word2Vec(min_count=8, window=5, workers=4, size=300, alpha=0.05, negative=10)
+        if self.modelType=='fasttext':
+            self.word_embedding = FastText(size=300)
+        self.word_embedding.build_vocab(sentences.open(data_path))
+        self.word_embedding.train(sentences.open(data_path), total_examples=self.word_embedding.corpus_count, epochs=self.word_embedding.iter)
 
 
     def evaluate(self):
         ''' evaluates the semantic concepts a Word2Vec model has learned based on analogies, e.g. sister:brother :: daughter:son, in specific categories (e.g. currencies, verb forms, family, country capitals, etc.) '''
         evaluationFile = 'questions-words.txt'
-        self.accuracy = self.w2v_model.wv.accuracy(evaluationFile)
+        self.accuracy = self.word_embedding.wv.accuracy(evaluationFile)
 
 
     def to_tsv(self):
@@ -35,13 +39,13 @@ class Model:
     def vectors2tsv(self):
         with open(self.model_path + '.tsv', 'wb') as f:
             writer = csv.writer(f, delimiter='\t', lineterminator='\n')
-            writer.writerows(self.w2v_model.wv.vectors)
+            writer.writerows(self.word_embedding.wv.vectors)
         f.close()
 
 
     def vocab2tsv(self):
         with open(self.model_path + '_metadata.tsv', 'wb') as f:
-            vocab = self.w2v_model.wv.vocab.keys()
+            vocab = self.word_embedding.wv.vocab.keys()
             vocabWithLineSeparator = [word + '\n' for ind,word in enumerate(vocab) if ind<len(vocab)-1]
             f.writelines(vocabWithLineSeparator)
         f.close()
@@ -52,8 +56,8 @@ class Model:
 
 
     def load(self):
-        self.w2v_model = Word2Vec.load(self.model_path)
+        self.word_embedding = Word2Vec.load(self.model_path)
 
 
     def save(self):
-        self.w2v_model.save(self.model_path)
+        self.word_embedding.save(self.model_path)
