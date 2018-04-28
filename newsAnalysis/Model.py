@@ -1,4 +1,5 @@
 from gensim.models import Word2Vec, FastText
+import numpy as np
 import logging
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 import sentences
@@ -61,3 +62,17 @@ class Model:
 
     def save(self):
         self.word_embedding.save(self.model_path)
+
+
+    def wordListSimilarity(self, w, listOfWords):
+        similarities = [self.word_embedding.wv.similarity(w, word) for word in listOfWords]
+        return np.mean(similarities)
+
+
+    def WEAT(self, targets1, targets2, attributes1, attributes2):
+        wordAttributeSimTarget1 = [self.wordListSimilarity(target, attributes1) - self.wordListSimilarity(target, attributes2) for target in targets1]
+        wordAttributeSimTarget2 = [self.wordListSimilarity(target, attributes1) - self.wordListSimilarity(target, attributes2) for target in targets2]
+        return np.sum(wordAttributeSimTarget1) - np.sum(wordAttributeSimTarget2)
+
+
+
