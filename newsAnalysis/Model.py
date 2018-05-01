@@ -5,6 +5,7 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 import sentences
 import os
 import csv
+import matplotlib.pyplot as plt
 
 class Model:
 
@@ -73,6 +74,17 @@ class Model:
         ''' substract the mean cos distance of a word with all attributes in attributes1 with the mean cosine distance of word with all attributes in attributes2:
             s(w, A1, A2) = mean[for a1 in A1: cos(w, a1)] - mean[for a2 in A2: cos(w, a2)] '''
         return self.wordListSimilarity(word, attributes1) - self.wordListSimilarity(word, attributes2)
+
+
+    def plotWordAssociations(self, listOfWords, attributes1, attributes2):
+        wordAttributeSimTarget1 = [self.wordListSimilarity(word, attributes1) for word in listOfWords]
+        wordAttributeSimTarget2 = [self.wordListSimilarity(word, attributes2) for word in listOfWords]
+        fig, ax = plt.subplots()
+        ax.scatter(wordAttributeSimTarget1, wordAttributeSimTarget2)
+        ax.set_title('Word Association Scatter Plot')
+        for i, word in enumerate(listOfWords):
+            ax.annotate(word, (wordAttributeSimTarget1[i], wordAttributeSimTarget2[i]))
+        plt.show()
 
 
     def WEAT(self, targets1, targets2, attributes1, attributes2):
