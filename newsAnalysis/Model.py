@@ -65,13 +65,19 @@ class Model:
 
 
     def wordListSimilarity(self, w, listOfWords):
+        ''' return the mean cosine similarity of a word and all words in a list '''
         similarities = [self.word_embedding.wv.similarity(w, word) for word in listOfWords]
         return np.mean(similarities)
 
+    def mapWordOnAxis(self, word, attributes1, attributes2):
+        ''' substract the mean cos distance of a word with all attributes in attributes1 with the mean cosine distance of word with all attributes in attributes2:
+            s(w, A1, A2) = mean[for a1 in A1: cos(w, a1)] - mean[for a2 in A2: cos(w, a2)] '''
+        return self.wordListSimilarity(word, attributes1) - self.wordListSimilarity(word, attributes2)
+
 
     def WEAT(self, targets1, targets2, attributes1, attributes2):
-        wordAttributeSimTarget1 = [self.wordListSimilarity(target, attributes1) - self.wordListSimilarity(target, attributes2) for target in targets1]
-        wordAttributeSimTarget2 = [self.wordListSimilarity(target, attributes1) - self.wordListSimilarity(target, attributes2) for target in targets2]
+        wordAttributeSimTarget1 = [self.mapWordOnAxis(target, attributes1, attributes2) for target in targets1]
+        wordAttributeSimTarget2 = [self.mapWordOnAxis(target, attributes1, attributes2) for target in targets2]
         return np.sum(wordAttributeSimTarget1) - np.sum(wordAttributeSimTarget2)
 
 
