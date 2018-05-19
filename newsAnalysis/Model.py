@@ -5,7 +5,7 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 import sentences
 import os
 import csv
-import matplotlib.pyplot as plt
+from ImagePlotter import ImagePlotter
 
 class Model:
 
@@ -76,15 +76,12 @@ class Model:
         return self.wordListSimilarity(word, attributes1) - self.wordListSimilarity(word, attributes2)
 
 
-    def plotWordAssociations(self, listOfWords, attributes1, attributes2):
+    def plotWordAssociations(self, listOfWords, attributes1, attributes2, title='test'):
         wordAttributeSimTarget1 = [self.wordListSimilarity(word, attributes1) for word in listOfWords]
         wordAttributeSimTarget2 = [self.wordListSimilarity(word, attributes2) for word in listOfWords]
-        fig, ax = plt.subplots()
-        ax.scatter(wordAttributeSimTarget1, wordAttributeSimTarget2)
-        ax.set_title('Word Association Scatter Plot')
-        for i, word in enumerate(listOfWords):
-            ax.annotate(word, (wordAttributeSimTarget1[i], wordAttributeSimTarget2[i]))
-        plt.show()
+        difference = np.array(wordAttributeSimTarget1) - np.array(wordAttributeSimTarget2)
+        plotter = ImagePlotter(True)
+        plotter.horizontalBarPlot(difference, listOfWords, title='Word-Axis Mapping', x_label='attribute association', path=title + '.png')
 
 
     def WEAT(self, targets1, targets2, attributes1, attributes2):
