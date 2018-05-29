@@ -76,12 +76,15 @@ class Model:
         return self.wordListSimilarity(word, attributes1) - self.wordListSimilarity(word, attributes2)
 
 
-    def plotWordAssociations(self, listOfWords, attributes1, attributes2, title='test'):
+    def keywordMapping(self, listOfWords, attributes1, attributes2):
         wordAttributeSimTarget1 = [self.wordListSimilarity(word, attributes1) for word in listOfWords]
         wordAttributeSimTarget2 = [self.wordListSimilarity(word, attributes2) for word in listOfWords]
-        difference = np.array(wordAttributeSimTarget1) - np.array(wordAttributeSimTarget2)
+        return np.array(wordAttributeSimTarget1) - np.array(wordAttributeSimTarget2)
+
+
+    def plotKeywordMapping(self, values, labels, title='test'):
         plotter = ImagePlotter(True)
-        plotter.horizontalBarPlot(difference, listOfWords, title='Word-Axis Mapping', x_label='attribute association', path=title + '.png')
+        plotter.horizontalBarPlot(values, labels, title='Word-Axis Mapping', x_label='attribute association', path=title + '.png')
 
 
     def WEAT(self, targets1, targets2, attributes1, attributes2):
