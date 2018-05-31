@@ -28,7 +28,7 @@ Storing a model in a tsv file enable its visualization with the [tensorflow embe
 ://projector.tensorflow.org/).
 
 
-We recommend to create a shell or python script to specify the parameters and execute the different steps:
+We recommend to create a *config.py* file which stores the parameters, e.g. database, user and host name, password,... to connect to the database:
 
 ```
 from createDatabase import createDatabase
@@ -41,24 +41,12 @@ PORT=PortNumber
 USER='UserName'
 PASSWORD='Password'
 
-NR_DOCS=100000
+``` 
 
-name = 'dataName' + str(NR_DOCS)
-data_path ='./data/' + name + '.csv'
+To create a word embedding model and to compute sample measure, run:
 
-if not os.path.exists(data_path):
-    createDatabase(DB, HOST, PORT, USER, PASSWORD, data_path, NR_DOCS)
-
-# use either fasttext or word2vec as modelType
-model = Model(name=name, modelType='fasttext')
-
-if model.exists():
-    model.load()
-else:
-    model.create(data_path)
-    model.save()
-
-model.evaluate()
-model.to_tsv()
 ```
+python run.py
+```
+
 
