@@ -49,4 +49,8 @@ To create a word embedding model and to compute sample measure, run:
 python run.py
 ```
 
+## Visualisation
 
+ For the visualisation of the word embedding model the standalone version of the [tensorflow embedding projector](https://github.com/tensorflow/embedding-projector-standalone) is used.
+Clone the git repository and initiate *newsAnalysis/Projector.py* with the relative path to this repository. 
+*Model.visualise()* automatically loads a trained model to the browser and allows users to explore its words and their relations.
