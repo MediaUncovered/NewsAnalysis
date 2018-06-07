@@ -9,3 +9,6 @@
 
 # avoid adding credentials to git
 docker-compose.yml
+
+# intermediate and result data
+/data

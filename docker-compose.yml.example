@@ -1,0 +1,15 @@
+version: '3'
+services:
+  runner:
+    image: media-uncovered/newsanalysis:acceptance
+    build: .
+    environment:
+      DB_HOST: "DB_HOST"
+      DB_NAME: "DB_NAME"
+      DB_PORT: "DB_PORT"
+      DB_USER: "DB_USER"
+      DB_PASSWORD: "DB_PASSWORD"
+      NO_DOCS: "NO_DOCS"
+    volumes:
+      - ./data:/app/data
+    command: "python newsAnalysis/run.py"
