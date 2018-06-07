@@ -1,7 +1,8 @@
-from createDatabase import createDatabase
-from Model import Model
-import config
 import os
+
+import config
+from Model import Model
+from createDatabase import createDatabase
 
 
 def col2list(df, col):
