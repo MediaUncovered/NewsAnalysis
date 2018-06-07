@@ -1,11 +1,12 @@
-from gensim.models import Word2Vec, FastText
-import numpy as np
 import logging
+
+import numpy as np
+from gensim.models import Word2Vec, FastText
+
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 import sentences
 import os
 import csv
-from ImagePlotter import ImagePlotter
 
 class Model:
 
@@ -82,9 +83,9 @@ class Model:
         return np.array(wordAttributeSimTarget1) - np.array(wordAttributeSimTarget2)
 
 
-    def plotKeywordMapping(self, values, labels, title='test'):
-        plotter = ImagePlotter(True)
-        plotter.horizontalBarPlot(values, labels, title='Word-Axis Mapping', x_label='attribute association', path=title + '.png')
+    # def plotKeywordMapping(self, values, labels, title='test'):
+    #     plotter = ImagePlotter(True)
+    #     plotter.horizontalBarPlot(values, labels, title='Word-Axis Mapping', x_label='attribute association', path=title + '.png')
 
 
     def WEAT(self, targets1, targets2, attributes1, attributes2):
