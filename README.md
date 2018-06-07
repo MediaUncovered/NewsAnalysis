@@ -28,7 +28,7 @@ Storing a model in a tsv file enable its visualization with the [tensorflow embe
 ://projector.tensorflow.org/).
 
 
-We recommend to create a shell or python script to specify the parameters and execute the different steps:
+We recommend to create a *config.py* file which stores the parameters, e.g. database, user and host name, password,... to connect to the database:
 
 ```
 from createDatabase import createDatabase
@@ -41,26 +41,19 @@ PORT=PortNumber
 USER='UserName'
 PASSWORD='Password'
 
-NR_DOCS=100000
+``` 
 
-name = 'dataName' + str(NR_DOCS)
-data_path ='./data/' + name + '.csv'
+To create a word embedding model and to compute sample measure, run:
 
-if not os.path.exists(data_path):
-    createDatabase(DB, HOST, PORT, USER, PASSWORD, data_path, NR_DOCS)
-
-# use either fasttext or word2vec as modelType
-model = Model(name=name, modelType='fasttext')
-
-if model.exists():
-    model.load()
-else:
-    model.create(data_path)
-    model.save()
-
-model.evaluate()
-model.to_tsv()
 ```
+python run.py
+```
+
+## Visualisation
+ For the visualisation of the word embedding model the standalone version of the [tensorflow embedding projector](https://github.com/tensorflow/embedding-projector-standalone) is used.
+Clone the git repository and initiate *newsAnalysis/Projector.py* with the relative path to this repository. 
+*Model.visualise()* automatically loads a trained model to the browser and allows users to explore its words and their relations.
+
 
 ## Acceptance Test
 To ensure that your work also runs as you intended on other machines, please run an acceptance test.
@@ -76,4 +69,3 @@ docker-compose up
 
 This will create a docker container that will install all the requirements from requirements.txt and runs the 
 newsAnalysis.run.py file. The generated data will be stored in the ./data dir that is created by this process.
-

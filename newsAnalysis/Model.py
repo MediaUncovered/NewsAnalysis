@@ -7,6 +7,9 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 import sentences
 import os
 import csv
+import shutil
+from ImagePlotter import ImagePlotter
+from Projector import Projector
 
 class Model:
 
@@ -33,6 +36,10 @@ class Model:
         evaluationFile = 'questions-words.txt'
         self.accuracy = self.word_embedding.wv.accuracy(evaluationFile)
 
+    def vectors2Bytes(self):
+        vectors = self.word_embedding.wv.vectors
+        vectors.tofile(self.model_path + '.bytes')
+
 
     def to_tsv(self):
         self.vectors2tsv()
@@ -49,7 +56,8 @@ class Model:
     def vocab2tsv(self):
         with open(self.model_path + '_metadata.tsv', 'wb') as f:
             vocab = self.word_embedding.wv.vocab.keys()
-            vocabWithLineSeparator = [word + '\n' for ind,word in enumerate(vocab) if ind<len(vocab)-1]
+            #vocabWithLineSeparator = [word + '\n' for ind,word in enumerate(vocab) if ind<len(vocab)-1]
+            vocabWithLineSeparator = [word + '\n' for word in vocab]
             f.writelines(vocabWithLineSeparator)
         f.close()
 
@@ -92,6 +100,25 @@ class Model:
         wordAttributeSimTarget1 = [self.mapWordOnAxis(target, attributes1, attributes2) for target in targets1]
         wordAttributeSimTarget2 = [self.mapWordOnAxis(target, attributes1, attributes2) for target in targets2]
         return np.sum(wordAttributeSimTarget1) - np.sum(wordAttributeSimTarget2)
+
+
+    def visualise(self):
+        self.vocab2tsv()
+        self.vectors2Bytes()
+
+        projector = Projector()
+        modelName = '_'.join([self.name, self.modelType])
+
+        shutil.copy(self.model_path + '.bytes', projector.data_path + '/' + modelName + '.bytes')
+        shutil.copy(self.model_path + '_metadata.tsv', projector.data_path + '/' + modelName + '_metadata.tsv')
+
+        path = os.path.join(projector.data_path.split('/')[-1], modelName)
+        projector.addModelToConfig(self.name, path + '.bytes', path + '_metadata.tsv', len(self.word_embedding.wv.vocab), self.word_embedding.vector_size)
+        projector.writeConfigFile()
+        projector.run()
+
+
+
 
 
 
