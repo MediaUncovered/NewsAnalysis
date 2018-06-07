@@ -1,5 +1,11 @@
+# OSX
+.DS_STORE
+
 # Compiled Python files
 *.pyc
 
 # Pycharm
 /.idea
+
+# avoid adding credentials to git
+docker-compose.yml
