@@ -63,9 +63,17 @@ model.to_tsv()
 ```
 
 ## Acceptance Test
+To ensure that your work also runs as you intended on other machines, please run an acceptance test.
 
+To do this first copy the `docker-compose.yml.example` file and name it `docker-compose.yml`. Next fill in the environment 
+variables with your values. 
+
+Now you can build and run the acceptance test. 
 ```
 docker-compose build
 docker-compose up
 ```
+
+This will create a docker container that will install all the requirements from requirements.txt and runs the 
+newsAnalysis.run.py file. The generated data will be stored in the ./data dir that is created by this process.
 
