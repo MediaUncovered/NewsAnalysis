@@ -62,3 +62,10 @@ model.evaluate()
 model.to_tsv()
 ```
 
+## Acceptance Test
+
+```
+docker-compose build
+docker-compose up
+```
+
