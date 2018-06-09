@@ -13,3 +13,9 @@ docker-compose.yml
 # intermediate and result data
 /data
 /models
+
+# packaging
+/dist
+/build
+/newsanalysis.egg-info
+MANIFEST
