@@ -13,10 +13,13 @@ from Projector import Projector
 
 class Model:
 
-    def __init__(self, name='wordEmbedding', modelType='word2vec'):
+    def __init__(self, name='wordEmbedding', modelType='word2vec', model_path=None):
         self.name = name
         self.modelType = modelType
-        self.model_path = './models/' + name + '_' + self.modelType
+
+        if model_path is None:
+            model_path = './models/' + name + '_' + self.modelType
+        self.model_path = model_path
 
 
     def create(self, data_path):
