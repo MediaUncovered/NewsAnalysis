@@ -25,7 +25,7 @@ class ImagePlotter:
         try:
             plt.savefig(path)
         except:
-            print 'Error ImagePlotter: Figure cannot be saved'
+            print('Error ImagePlotter: Figure cannot be saved')
 
     def showFigure(self):
         if self.show:

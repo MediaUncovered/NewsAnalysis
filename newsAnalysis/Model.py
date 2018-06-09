@@ -1,6 +1,8 @@
-from gensim.models import Word2Vec, FastText
-import numpy as np
 import logging
+
+import numpy as np
+from gensim.models import Word2Vec, FastText
+
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 import sentences
 import os
@@ -31,8 +33,8 @@ class Model:
 
     def evaluate(self):
         ''' evaluates the semantic concepts a Word2Vec model has learned based on analogies, e.g. sister:brother :: daughter:son, in specific categories (e.g. currencies, verb forms, family, country capitals, etc.) '''
-        evaluationFile = 'questions-words.txt'
-        self.accuracy = self.word_embedding.wv.accuracy(evaluationFile)
+        with open('newsAnalysis/questions-words.txt', 'r') as evaluationFile:
+            self.accuracy = self.word_embedding.wv.accuracy(evaluationFile)
 
     def vectors2Bytes(self):
         vectors = self.word_embedding.wv.vectors
@@ -89,9 +91,9 @@ class Model:
         return np.array(wordAttributeSimTarget1) - np.array(wordAttributeSimTarget2)
 
 
-    def plotKeywordMapping(self, values, labels, title='test'):
-        plotter = ImagePlotter(True)
-        plotter.horizontalBarPlot(values, labels, title='Word-Axis Mapping', x_label='attribute association', path=title + '.png')
+    # def plotKeywordMapping(self, values, labels, title='test'):
+    #     plotter = ImagePlotter(True)
+    #     plotter.horizontalBarPlot(values, labels, title='Word-Axis Mapping', x_label='attribute association', path=title + '.png')
 
 
     def WEAT(self, targets1, targets2, attributes1, attributes2):
