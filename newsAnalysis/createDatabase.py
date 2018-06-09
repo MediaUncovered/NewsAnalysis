@@ -1,6 +1,5 @@
-from sys import argv
-from datastore import model
-from datastore import collect
+from newsAnalysis.datastore import collect
+from newsAnalysis.datastore import model
 
 
 def createDatabase(DATABASE, HOST, PORT, USER, PASSWORD, data_path, doc_limit=1000):

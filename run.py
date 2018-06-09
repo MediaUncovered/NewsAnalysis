@@ -1,8 +1,8 @@
 import os
 
-import config
-from Model import Model
-from createDatabase import createDatabase
+import newsAnalysis.config as config
+from newsAnalysis.Model import Model
+from newsAnalysis.createDatabase import createDatabase
 
 
 def col2List(df, col):
