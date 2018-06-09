@@ -32,28 +32,6 @@ word embedding model are displayed
 Storing a model in a tsv file enable its visualization with the [tensorflow embedding proyector](
 ://projector.tensorflow.org/).
 
-
-We recommend to create a *config.py* file which stores the parameters, e.g. database, user and host name, password,... to connect to the database:
-
-```
-from createDatabase import createDatabase
-from createModel import createModel
-from evaluateModel import evaluateModel
-
-DB='DatabaseName'
-HOST='HostName'
-PORT=PortNumber
-USER='UserName'
-PASSWORD='Password'
-
-``` 
-
-To create a word embedding model and to compute sample measure, run:
-
-```
-python run.py
-```
-
 ## Visualisation
  For the visualisation of the word embedding model the standalone version of the [tensorflow embedding projector](https://github.com/tensorflow/embedding-projector-standalone) is used.
 Clone the git repository and initiate *newsAnalysis/Projector.py* with the relative path to this repository. 
@@ -74,3 +52,11 @@ docker-compose up
 
 This will create a docker container that will install all the requirements from requirements.txt and runs the 
 newsAnalysis.run.py file. The generated data will be stored in the ./data dir that is created by this process.
+
+
+## Packaging
+
+To package newsanalysis into a wheel run `python setup.py bdist bdist_wheel`. The wheel file will then be saved under 
+`dist/newsanalysis-<VERSION>-py3-none-any.whl`.
+
+You can then install the package in your other environments using `pip install <PATH-TO-PACKAGE>`
