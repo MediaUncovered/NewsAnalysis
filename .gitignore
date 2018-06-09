@@ -12,3 +12,4 @@ docker-compose.yml
 
 # intermediate and result data
 /data
+/models

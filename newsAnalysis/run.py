@@ -1,8 +1,9 @@
-from createDatabase import createDatabase
-from Model import Model
-from Projector import Projector
-import config
 import os
+
+import config
+from Model import Model
+from createDatabase import createDatabase
+
 
 def col2List(df, col):
     values = df[col].tolist()
@@ -23,13 +24,5 @@ else:
     model.evaluate()
     model.save()
 
-model.visualise()
-
-maleWords = ['man', 'boy', 'brother', 'he', 'him', 'his']
-femaleWords = ['woman', 'girl', 'sister', 'she', 'her', 'hers']
-names = ['Kelly', 'Tracy', 'Jamie', 'Jackie', 'Taylor', 'Chris', 'Robin', 'Pat']
-
-mapping = model.keywordMapping(names, maleWords, femaleWords)
-model.plotKeywordMapping(mapping, names, 'Name Mapping')
-
 similarWords = model.word_embedding.wv.similar_by_word('apple')
+print(similarWords)
