@@ -7,6 +7,7 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 import os
 import csv
 import shutil
+import newsAnalysis.sentences as sentences
 from newsAnalysis.ImagePlotter import ImagePlotter
 from newsAnalysis.Projector import Projector
 
