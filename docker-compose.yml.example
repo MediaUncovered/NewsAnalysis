@@ -13,4 +13,3 @@ services:
     volumes:
       - ./data:/app/data
       - ./models:/app/models
-    command: "python newsAnalysis/run.py"
