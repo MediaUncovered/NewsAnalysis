@@ -2,7 +2,7 @@
 '''
 Handles transport of big data for analysis
 '''
-from datastore.model import Article
+from newsAnalysis.datastore.model import Article
 import unicodecsv as csv
 import os
 

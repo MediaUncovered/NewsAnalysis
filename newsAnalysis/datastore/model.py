@@ -1,5 +1,4 @@
 import sys
-import sys
 import time
 
 from sqlalchemy import Column, Integer, Unicode, DateTime, LargeBinary

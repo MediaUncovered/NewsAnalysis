@@ -12,4 +12,4 @@ services:
       NO_DOCS: "NO_DOCS"
     volumes:
       - ./data:/app/data
-    command: "python newsAnalysis/run.py"
+      - ./models:/app/models

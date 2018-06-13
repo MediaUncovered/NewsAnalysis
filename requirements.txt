@@ -6,3 +6,5 @@ unicodecsv == 0.14.1
 psycopg2==2.7.1
 numpy==1.14.2
 matplotlib==2.0.2
+wheel==0.31.1
+setuptools==39.2.0
