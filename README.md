@@ -2,8 +2,18 @@
 
 Trains, evaluates and analyses newspaper word embeddings.
 
+## Run script and set variables
+The *run.py* file contains the required steps to build, evaluate and analyse a word embedding model from a database. The parameters, e.g. to access the database or train the model, are set as environment variables. To change the number of documents that are used to train a word embedding model set
+```
+export NO_DOCS=42
+```
+Then run the script:
+```
+python3 run.py
+```
+
 ## Install dependencies
-To install the dependencies make sure you have [Python 2.7](https://www.python.org/download/releases/2.7/) and [pip](https://pip.pypa.io/en/stable/) installed. Clone or download the repository.
+To install the dependencies make sure you have [Python 3.5](https://www.python.org/downloads/release/python-350/) and [pip](https://pip.pypa.io/en/stable/) installed. Clone or download the repository.
 
 Upgrade pip:
 ```
@@ -14,23 +24,23 @@ Install the dependencies with:
 ```
 pip install -r requirements.txt
 ```
-Add models directory:
+Add models and data directory:
 ```
 mkdir models
 ```
 
 ## Word Embeddings
 - *newsAnalysis/createDatabase.py* accesses a SQL database to write the first n articles with information about title, 
-text, the date of publication, article and newspaper id to a csv file.To connect to the database provide its name, host, 
-port, user and password have to be provided.
+  text, the date of publication, article and newspaper id to a csv file.To connect to the database provide its name, host, 
+  port, user and password have to be provided.
 
 - *newsAnalysis/Model.py* trains a word embedding, fasttext or word2vec, based on documents stored in a csv file.
-Google generated analogies that show how well a model has learnt the relations in a specific field, e.g. 
-*Tokyo:Japan::Oslo:Norway*, *sister:brother::niece:nephew*, etc. Besides semantic relations also word forms are tested, 
-e.g. *sleeping:slept::dancing:danced*, *cool:coolest::weird:weirdest*, etc. With *evaluate()* the results of the trained 
-word embedding model are displayed
-Storing a model in a tsv file enable its visualization with the [tensorflow embedding proyector](
-://projector.tensorflow.org/).
+  Google generated analogies that show how well a model has learnt the relations in a specific field, e.g. 
+  *Tokyo:Japan::Oslo:Norway*, *sister:brother::niece:nephew*, etc. Besides semantic relations also word forms are tested, 
+  e.g. *sleeping:slept::dancing:danced*, *cool:coolest::weird:weirdest*, etc. With *evaluate()* the results of the trained 
+  word embedding model are displayed
+  Storing a model in a tsv file enable its visualization with the [tensorflow embedding proyector](
+  ://projector.tensorflow.org/).
 
 ## Visualisation
  For the visualisation of the word embedding model the standalone version of the [tensorflow embedding projector](https://github.com/tensorflow/embedding-projector-standalone) is used.

@@ -50,14 +50,14 @@ class Model:
 
 
     def vectors2tsv(self):
-        with open(self.model_path + '.tsv', 'wb') as f:
+        with open(self.model_path + '.tsv', 'w') as f:
             writer = csv.writer(f, delimiter='\t', lineterminator='\n')
             writer.writerows(self.word_embedding.wv.vectors)
         f.close()
 
 
     def vocab2tsv(self):
-        with open(self.model_path + '_metadata.tsv', 'wb') as f:
+        with open(self.model_path + '_metadata.tsv', 'w') as f:
             vocab = self.word_embedding.wv.vocab.keys()
             #vocabWithLineSeparator = [word + '\n' for ind,word in enumerate(vocab) if ind<len(vocab)-1]
             vocabWithLineSeparator = [word + '\n' for word in vocab]

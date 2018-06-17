@@ -1,5 +1,4 @@
 import os
-
 import newsAnalysis.config as config
 from newsAnalysis.Model import Model
 from newsAnalysis.createDatabase import createDatabase
@@ -23,6 +22,13 @@ else:
     model.create(data_path)
     model.evaluate()
     model.save()
+
+maleWords = ['man', 'boy', 'brother', 'he', 'him', 'his']
+femaleWords = ['woman', 'girl', 'sister', 'she', 'her', 'hers']
+names = ['Kelly', 'Tracy', 'Jamie', 'Jackie', 'Taylor', 'Chris', 'Robin', 'Pat']
+
+mapping = model.keywordMapping(names, maleWords, femaleWords)
+model.plotKeywordMapping(mapping, names, 'Name Mapping')
 
 similarWords = model.word_embedding.wv.similar_by_word('apple')
 print(similarWords)
