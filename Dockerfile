@@ -9,4 +9,5 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 RUN python -m nltk.downloader punkt
 
+CMD export DISPLAY:0
 CMD python run.py
