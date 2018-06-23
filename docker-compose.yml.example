@@ -13,3 +13,4 @@ services:
     volumes:
       - ./data:/app/data
       - ./models:/app/models
+      - ./projector/oss_data:/app/projector/oss_data
