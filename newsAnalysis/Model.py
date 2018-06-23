@@ -6,7 +6,6 @@ from gensim.models import Word2Vec, FastText
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 import os
 import csv
-import shutil
 import newsAnalysis.sentences as sentences
 from newsAnalysis.ImagePlotter import ImagePlotter
 from newsAnalysis.Projector import Projector
@@ -109,19 +108,8 @@ class Model:
         self.vocab2tsv()
         self.vectors2Bytes()
 
-        projector = Projector()
-        modelName = '_'.join([self.name, self.modelType])
+        model_name = '_'.join([self.name, self.modelType])
 
-        shutil.copy(self.model_path + '.bytes', projector.data_path + '/' + modelName + '.bytes')
-        shutil.copy(self.model_path + '_metadata.tsv', projector.data_path + '/' + modelName + '_metadata.tsv')
-
-        path = os.path.join(projector.data_path.split('/')[-1], modelName)
-        projector.addModelToConfig(self.name, path + '.bytes', path + '_metadata.tsv', len(self.word_embedding.wv.vocab), self.word_embedding.vector_size)
-        projector.writeConfigFile()
-        projector.run()
-
-
-
-
-
+        projector = Projector(model_name, self.model_path)
+        projector.run(len(self.word_embedding.wv.vocab), self.word_embedding.vector_size)
 

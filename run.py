@@ -23,6 +23,8 @@ else:
     model.evaluate()
     model.save()
 
+model.visualise()
+
 maleWords = ['man', 'boy', 'brother', 'he', 'him', 'his']
 femaleWords = ['woman', 'girl', 'sister', 'she', 'her', 'hers']
 names = ['Kelly', 'Tracy', 'Jamie', 'Jackie', 'Taylor', 'Chris', 'Robin', 'Pat']
