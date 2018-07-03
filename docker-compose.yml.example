@@ -13,3 +13,6 @@ services:
     volumes:
       - ./data:/app/data
       - ./models:/app/models
+      - ./unittests:/app/unittests
+      - ./sampleModels:/app/sampleModels
+      - ./projector/oss_data:/app/projector/oss_data

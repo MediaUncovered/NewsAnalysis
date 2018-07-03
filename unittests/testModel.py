@@ -4,7 +4,7 @@ import unittest
 class testModel(unittest.TestCase):
 
     def setUp(self):
-        self.model = Model(name='Moscow_Times_1000', modelType='fasttext')
+        self.model = Model(name='testModel', modelType='fasttext', model_path='./sampleModels/MoscowTimes_1000')
 
     def test_init(self):
         self.assertTrue(self.model.modelType=='word2vec' or self.model.modelType=='fasttext')
