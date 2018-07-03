@@ -20,5 +20,6 @@ setup(
         "psycopg2==2.7.1",
         "numpy==1.14.2",
         "matplotlib==2.0.2",
+        "nose==1.3.7",
     ],
 )
