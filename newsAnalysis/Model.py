@@ -10,6 +10,7 @@ import shutil
 import newsAnalysis.sentences as sentences
 from newsAnalysis.ImagePlotter import ImagePlotter
 from newsAnalysis.Projector import Projector
+from newsAnalysis.Info import Info
 
 class Model:
 
@@ -32,6 +33,7 @@ class Model:
             self.word_embedding = FastText(size=300)
         self.word_embedding.build_vocab(sentences.open(data_path))
         self.word_embedding.train(sentences.open(data_path), total_examples=self.word_embedding.corpus_count, epochs=self.word_embedding.iter)
+        self.info = Info(data_path)
 
 
     def evaluate(self):
@@ -119,9 +121,5 @@ class Model:
         projector.addModelToConfig(self.name, path + '.bytes', path + '_metadata.tsv', len(self.word_embedding.wv.vocab), self.word_embedding.vector_size)
         projector.writeConfigFile()
         projector.run()
-
-
-
-
 
 

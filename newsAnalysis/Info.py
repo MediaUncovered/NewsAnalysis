@@ -1,14 +1,16 @@
+import pandas as pd
+import pdb
+
 class Info:
 
-    def __init__(self):
-        pass
+    def __init__(self, data_path):
+        data = pd.read_csv(data_path, encoding='utf8')
 
-    def database(self, databaseName, host, port, user, password):
-        self.database = databaseName
-        self.host = host
-        self.port = port
-        self.user = user
-        self.password = password
+    def setNrArticles(self, data):
+        self.nr_articles = len(data)
+        self.empty_articles = len(data[data.body.isnull()])
+
+
 
 
 
