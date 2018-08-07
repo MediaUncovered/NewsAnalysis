@@ -5,6 +5,7 @@ class testModel(unittest.TestCase):
 
     def setUp(self):
         self.model = Model(name='testModel', modelType='fasttext', model_path='./sampleModels/MoscowTimes_1000')
+        self.model.load()
         self.data_path = './sampleModels/MoscowTimes_1000.csv'
 
     def test_init(self):
@@ -19,6 +20,13 @@ class testModel(unittest.TestCase):
         self.assertTrue(self.model.exists())
 
     def test_load(self):
-        self.model.load()
         self.assertTrue(hasattr(self.model, 'word_embedding'))
+
+    def test_getWordCount(self):
+        self.assertGreaterEqual(self.model.getWordCount('word'), 5)
+        self.assertRaises(KeyError, lambda: self.model.getWordCount('unkown_word'))
+
+    def test_hasWord(self):
+        self.assertTrue(self.model.hasWord('word'))
+        self.assertFalse(self.model.hasWord('unkown_word'))
 

@@ -78,6 +78,17 @@ class Model:
     def save(self):
         self.word_embedding.save(self.model_path)
 
+    def hasWord(self, word):
+        if self.word_embedding.wv.vocab.get(word) == None:
+            return False
+        else:
+            return True
+
+    def getWordCount(self, word):
+        if self.hasWord(word):
+            return self.word_embedding.wv.vocab.get(word).count
+        else:
+            raise KeyError('ERROR: WoRD not in Model')
 
     def wordListSimilarity(self, w, listOfWords):
         ''' return the mean cosine similarity of a word and all words in a list '''
