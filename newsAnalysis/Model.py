@@ -33,7 +33,11 @@ class Model:
             self.word_embedding = FastText(size=300)
         self.word_embedding.build_vocab(sentences.open(data_path))
         self.word_embedding.train(sentences.open(data_path), total_examples=self.word_embedding.corpus_count, epochs=self.word_embedding.iter)
-        self.info = Info(data_path)
+        self.info(data_path)
+
+    def info(self, data_path):
+        self.nr_articles = sentences.count(data_path)
+        self.nr_words = len(self.word_embedding.wv.vocab)
 
 
     def evaluate(self):
