@@ -10,7 +10,6 @@ import shutil
 import newsAnalysis.sentences as sentences
 from newsAnalysis.ImagePlotter import ImagePlotter
 from newsAnalysis.Projector import Projector
-from newsAnalysis.Info import Info
 
 class Model:
 
@@ -28,7 +27,7 @@ class Model:
         file_path points to a csv file containing articles with the text of newspaper articles in a column called body
         '''
         if self.modelType=='word2vec':
-            self.word_embedding = Word2Vec(min_count=8, window=5, workers=4, size=300, alpha=0.05, negative=10)
+            self.word_embedding = Word2Vec(min_count=8, window=5, workers=4, size=300, alpha=0.05, negative=10, sg=1)
         if self.modelType=='fasttext':
             self.word_embedding = FastText(size=300)
         self.word_embedding.build_vocab(sentences.open(data_path))
