@@ -64,6 +64,14 @@ This will create a docker container that will install all the requirements from 
 newsAnalysis.run.py file. The generated data will be stored in the ./data dir that is created by this process.
 
 
+## Unittests
+Unittests are automatically run in the docker container.
+For seperate testing *nose* can be used:
+```
+nosetests unittests/
+```
+
+
 ## Packaging
 
 To package newsanalysis into a wheel run `python setup.py bdist bdist_wheel`. The wheel file will then be saved under 

@@ -10,6 +10,10 @@ def open(path):
         for sentence in sentences:
             yield sentence
 
+def count(path):
+    articles = collect.articles_in_file(path)
+    return len([article for article in articles if article.body != ''])
+
 
 def process(text):
     text = text.lower()

@@ -26,11 +26,16 @@ class Model:
         file_path points to a csv file containing articles with the text of newspaper articles in a column called body
         '''
         if self.modelType=='word2vec':
-            self.word_embedding = Word2Vec(min_count=8, window=5, workers=4, size=300, alpha=0.05, negative=10)
+            self.word_embedding = Word2Vec(min_count=8, window=5, workers=4, size=300, alpha=0.05, negative=10, sg=1)
         if self.modelType=='fasttext':
             self.word_embedding = FastText(size=300)
         self.word_embedding.build_vocab(sentences.open(data_path))
         self.word_embedding.train(sentences.open(data_path), total_examples=self.word_embedding.corpus_count, epochs=self.word_embedding.iter)
+        self.info(data_path)
+
+    def info(self, data_path):
+        self.nr_articles = sentences.count(data_path)
+        self.nr_words = len(self.word_embedding.wv.vocab)
 
 
     def evaluate(self):
@@ -75,6 +80,17 @@ class Model:
     def save(self):
         self.word_embedding.save(self.model_path)
 
+    def hasWord(self, word):
+        if self.word_embedding.wv.vocab.get(word) == None:
+            return False
+        else:
+            return True
+
+    def getWordCount(self, word):
+        if self.hasWord(word):
+            return self.word_embedding.wv.vocab.get(word).count
+        else:
+            raise KeyError('ERROR: WoRD not in Model')
 
     def wordListSimilarity(self, w, listOfWords):
         ''' return the mean cosine similarity of a word and all words in a list '''
@@ -107,9 +123,7 @@ class Model:
     def visualise(self):
         self.vocab2tsv()
         self.vectors2Bytes()
-
         model_name = '_'.join([self.name, self.modelType])
 
         projector = Projector(model_name, self.model_path)
         projector.run(len(self.word_embedding.wv.vocab), self.word_embedding.vector_size)
-
