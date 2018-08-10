@@ -7,7 +7,7 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 import os
 import csv
 import shutil
-import newsAnalysis.sentences as sentences
+from newsAnalysis.Sentences import Sentences
 from newsAnalysis.ImagePlotter import ImagePlotter
 from newsAnalysis.Projector import Projector
 
@@ -30,12 +30,15 @@ class Model:
             self.word_embedding = Word2Vec(min_count=8, window=5, workers=4, size=300, alpha=0.05, negative=10, sg=1)
         if self.modelType=='fasttext':
             self.word_embedding = FastText(size=300)
-        self.word_embedding.build_vocab(sentences.open(data_path))
-        self.word_embedding.train(sentences.open(data_path), total_examples=self.word_embedding.corpus_count, epochs=self.word_embedding.iter)
-        self.info(data_path)
 
-    def info(self, data_path):
-        self.nr_articles = sentences.count(data_path)
+        sentences = Sentences(data_path)
+        self.word_embedding.build_vocab(sentences)
+        self.word_embedding.train(sentences, total_examples=self.word_embedding.corpus_count, epochs=self.word_embedding.iter)
+        self.info(sentences)
+
+
+    def info(self, sentences):
+        self.nr_articles = sentences.count()
         self.nr_words = len(self.word_embedding.wv.vocab)
 
 

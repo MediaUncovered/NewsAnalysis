@@ -58,15 +58,3 @@ def download_articles_to_file(session, file_path, source_id=1, limit=None):
                     [article.id, article.source_id, article.published, article.title, article.body]
                 )
 
-
-def articles_in_file(file_path):
-    '''
-    file_path : String
-        The path of the file to read from.
-    '''
-    with open(file_path, "rb") as f:
-        reader = csv.reader(f, encoding='utf-8')
-        for row in reader:
-            article = Article(id=row[0], source_id=row[1],
-                                    published=row[2], title=row[3], body=row[4])
-            yield article

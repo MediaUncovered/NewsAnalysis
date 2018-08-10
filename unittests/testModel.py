@@ -1,4 +1,5 @@
 from newsAnalysis.Model import Model
+from newsAnalysis.Sentences import Sentences
 import unittest
 
 class testModel(unittest.TestCase):
@@ -13,7 +14,8 @@ class testModel(unittest.TestCase):
         self.assertIsNotNone(self.model.model_path)
 
     def test_info(self):
-        self.model.info(self.data_path)
+        sentences = Sentences(self.data_path)
+        self.model.info(sentences)
         self.assertTrue(hasattr(self.model, 'nr_articles'))
         self.assertTrue(hasattr(self.model, 'nr_words'))
         self.assertLessEqual(self.model.nr_articles, 1000)
