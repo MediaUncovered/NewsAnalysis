@@ -2,8 +2,6 @@
 from nltk.tokenize import sent_tokenize, word_tokenize
 import csv
 
-newspaperIDs = {1: 'MoscowTimes'}
-
 class Collection(object):
 
     def __init__(self, path):
@@ -27,7 +25,4 @@ class Collection(object):
             if article['body']:
                 count += 1
         return count
-
-
-
 

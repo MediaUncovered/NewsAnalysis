@@ -1,5 +1,5 @@
 from newsAnalysis.Model import Model
-from newsAnalysis.Sentences import Sentences
+from newsAnalysis.Collection import Collection
 import unittest
 
 class testModel(unittest.TestCase):
@@ -12,14 +12,6 @@ class testModel(unittest.TestCase):
     def test_init(self):
         self.assertTrue(self.model.modelType=='word2vec' or self.model.modelType=='fasttext')
         self.assertIsNotNone(self.model.model_path)
-
-    def test_info(self):
-        sentences = Sentences(self.data_path)
-        self.model.info(sentences)
-        self.assertTrue(hasattr(self.model, 'nr_articles'))
-        self.assertTrue(hasattr(self.model, 'nr_words'))
-        self.assertLessEqual(self.model.nr_articles, 1000)
-        self.assertGreater(self.model.nr_words, 10)
 
     def test_exists(self):
         self.assertTrue(self.model.exists())
