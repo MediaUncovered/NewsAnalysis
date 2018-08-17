@@ -17,9 +17,10 @@ if not os.path.exists(data_path):
 model = Model(name, 'fasttext')
 
 if model.exists():
-    model.load()
+    model_path = model.model_path
+    model = model.load(model_path=model_path)
 else:
-    model.create(data_path)
+    model.create(data_path, modelName=name, modelType='fasttext')
     model.evaluate()
     model.save()
 
