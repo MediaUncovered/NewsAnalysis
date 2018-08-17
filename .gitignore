@@ -11,8 +11,7 @@
 docker-compose.yml
 
 # avoid publishing data collection
-/sampleModels/*.csv
-/sampleModels/*.pkl
+/sampleModels/*
 
 # intermediate and result data
 /data
