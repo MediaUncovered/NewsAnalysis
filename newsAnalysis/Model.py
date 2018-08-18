@@ -1,9 +1,10 @@
 import logging
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
+import pickle
 import numpy as np
 from gensim.models import Word2Vec, FastText
 
-logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 import os
 import csv
 import shutil
@@ -14,34 +15,44 @@ from newsAnalysis.Projector import Projector
 
 class Model:
 
-    def __init__(self, name='wordEmbedding', modelType='word2vec', model_path=None):
-        self.name = name
-        self.modelType = modelType
-
-        if model_path is None:
-            model_path = './models/' + name + '_' + self.modelType
-        self.model_path = model_path
+    def __init__(self, name=None, modelType=None):
+        if name and modelType:
+            self.name = name
+            self.modelType = modelType
+            self.model_path = self.getModelPath(name, modelType)
 
 
-    def create(self, data_path):
+    def create(self, data_path, modelName='wordEmbedding', modelType='word2vec', model_path=None):
         ''' Uses Gensim to train a word embedding Model, either fasttext or word2vec are possible.
         file_path points to a csv file containing articles with the text of newspaper articles in a column called body
         '''
+        self.name = modelName
+        self.modelType = modelType
+        if model_path is None:
+            model_path = self.getModelPath(self.name, self.modelType)
+        self.model_path = model_path
         if self.modelType=='word2vec':
             self.word_embedding = Word2Vec(min_count=8, window=5, workers=4, size=300, alpha=0.05, negative=10, sg=1)
         if self.modelType=='fasttext':
             self.word_embedding = FastText(size=300)
 
+
         self.collectionInfo = CollectionInfo(data_path)
         collection = Collection(data_path)
+
         self.word_embedding.build_vocab(collection)
         self.word_embedding.train(collection, total_examples=self.word_embedding.corpus_count, epochs=self.word_embedding.iter)
+
+
+    def getModelPath(self, modelName, modelType):
+        return './models/' + modelName + '_' + modelType
 
 
     def evaluate(self):
         ''' evaluates the semantic concepts a Word2Vec model has learned based on analogies, e.g. sister:brother :: daughter:son, in specific categories (e.g. currencies, verb forms, family, country capitals, etc.) '''
         with open('newsAnalysis/questions-words.txt', 'r') as evaluationFile:
             self.accuracy = self.word_embedding.wv.accuracy(evaluationFile)
+
 
     def vectors2Bytes(self):
         vectors = self.word_embedding.wv.vectors
@@ -69,16 +80,31 @@ class Model:
         f.close()
 
 
-    def exists(self):
-        return os.path.exists(self.model_path)
+    def exists(self, model_path=None):
+        if hasattr(self, 'model_path'):
+            return os.path.exists(self.model_path)
+        elif model_path:
+            return os.path.exists(model_path)
+        else:
+            return False
 
 
-    def load(self):
-        self.word_embedding = Word2Vec.load(self.model_path)
+    def load(self, modelName=None, modelType=None, model_path=None):
+        if hasattr(self, 'model_path'):
+            model_path = self.model_path
+        elif modelName and modelType:
+            model_path = self.getModelPath(modelName, modelType)
+        input_file = open(model_path + '.pkl', 'rb')
+        self = pickle.load(input_file)
+        self.word_embedding = Word2Vec.load(model_path)
+        return self
 
 
     def save(self):
+        output = open(self.model_path + '.pkl', 'wb')
+        pickle.dump(self, output)
         self.word_embedding.save(self.model_path)
+
 
     def hasWord(self, word):
         if self.word_embedding.wv.vocab.get(word) == None:

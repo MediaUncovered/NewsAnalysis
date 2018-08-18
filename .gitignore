@@ -10,6 +10,9 @@
 # avoid adding credentials to git
 docker-compose.yml
 
+# avoid publishing data collection
+/sampleModels/*
+
 # intermediate and result data
 /data
 /models

@@ -5,19 +5,17 @@ import unittest
 class testModel(unittest.TestCase):
 
     def setUp(self):
-        self.model = Model(name='testModel', modelType='fasttext', model_path='./sampleModels/MoscowTimes_1000')
-        self.model.load()
+        model_path='./sampleModels/MoscowTimes_1000'
+        self.model = Model().load(model_path= model_path)
         self.data_path = './sampleModels/MoscowTimes_1000.csv'
-
-    def test_init(self):
-        self.assertTrue(self.model.modelType=='word2vec' or self.model.modelType=='fasttext')
-        self.assertIsNotNone(self.model.model_path)
 
     def test_exists(self):
         self.assertTrue(self.model.exists())
 
     def test_load(self):
+        self.assertTrue(self.model.name, 'MoscowTimes')
         self.assertTrue(hasattr(self.model, 'word_embedding'))
+        self.assertTrue(hasattr(self.model, 'modelType'))
 
     def test_getWordCount(self):
         self.assertGreaterEqual(self.model.getWordCount('word'), 5)
