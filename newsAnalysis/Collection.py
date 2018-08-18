@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 from nltk.tokenize import sent_tokenize, word_tokenize
+from datetime import datetime
 import csv
+
+DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+MIN_DATE = datetime.strptime('0001-01-01 00:00:00', DATE_FORMAT)
+MAX_DATE = datetime.now()
 
 class Collection(object):
 
@@ -26,3 +31,20 @@ class Collection(object):
                 count += 1
         return count
 
+    def get_earliest_publication_date(self):
+        earliest_publication_date = MAX_DATE
+        for article in self.load_articles():
+            if article['published']:
+                date = datetime.strptime(article['published'], DATE_FORMAT)
+                if date < earliest_publication_date:
+                    earliest_publication_date = date
+        return earliest_publication_date.strftime(DATE_FORMAT)
+
+    def get_latest_publication_date(self):
+        latest_publication_date =  MIN_DATE
+        for article in self.load_articles():
+            if article['published']:
+                date = datetime.strptime(article['published'], DATE_FORMAT)
+                if date > latest_publication_date:
+                    latest_publication_date = date
+        return latest_publication_date.strftime(DATE_FORMAT)
