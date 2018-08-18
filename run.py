@@ -3,11 +3,6 @@ import newsAnalysis.config as config
 from newsAnalysis.Model import Model
 from newsAnalysis.createDatabase import createDatabase
 
-
-def col2List(df, col):
-    values = df[col].tolist()
-    return [elem for elem in values if isinstance(elem, str)]
-
 name = 'Moscow_Times_' + str(config.NO_DOCS)
 data_path ='./data/' + name + '.csv'
 
