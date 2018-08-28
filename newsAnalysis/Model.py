@@ -3,7 +3,7 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 
 import pickle
 import numpy as np
-from gensim.models import Word2Vec, FastText
+from gensim.models import Word2Vec, FastText, KeyedVectors
 
 import os
 import csv
@@ -96,14 +96,22 @@ class Model:
             model_path = self.getModelPath(modelName, modelType)
         input_file = open(model_path + '.pkl', 'rb')
         self = pickle.load(input_file)
-        self.word_embedding = Word2Vec.load(model_path)
+        self.word_embedding = KeyedVectors.load(model_path, mmap='r')
         return self
+
+
+    def __getstate__(self):
+        return (self.modelType, self.name, self.collectionInfo)
+
+
+    def __setstate__(self, state):
+        self.modelType, self.name, self.collectionInfo = state
 
 
     def save(self):
         output = open(self.model_path + '.pkl', 'wb')
         pickle.dump(self, output)
-        self.word_embedding.save(self.model_path)
+        self.word_embedding.wv.save(self.model_path)
 
 
     def hasWord(self, word):
@@ -116,7 +124,7 @@ class Model:
         if self.hasWord(word):
             return self.word_embedding.wv.vocab.get(word).count
         else:
-            raise KeyError('ERROR: WoRD not in Model')
+            raise KeyError('ERROR: WORD not in Model')
 
     def wordListSimilarity(self, w, listOfWords):
         ''' return the mean cosine similarity of a word and all words in a list '''
