@@ -9,6 +9,7 @@ import os
 import csv
 import shutil
 from newsAnalysis.CollectionInfo import CollectionInfo
+from newsAnalysis.ModelInfo import ModelInfo
 from newsAnalysis.Collection import Collection
 from newsAnalysis.ImagePlotter import ImagePlotter
 from newsAnalysis.Projector import Projector
@@ -42,6 +43,8 @@ class Model:
 
         self.word_embedding.build_vocab(collection)
         self.word_embedding.train(collection, total_examples=self.word_embedding.corpus_count, epochs=self.word_embedding.iter)
+
+        self.modelInfo = ModelInfo(self.modelType, self.word_embedding)
 
 
     def getModelPath(self, modelName, modelType):
@@ -96,22 +99,22 @@ class Model:
             model_path = self.getModelPath(modelName, modelType)
         input_file = open(model_path + '.pkl', 'rb')
         self = pickle.load(input_file)
-        self.word_embedding = KeyedVectors.load(model_path, mmap='r')
+        self.word_embedding = KeyedVectors.load_word2vec_format(model_path) #, mmap='r')
         return self
 
 
     def __getstate__(self):
-        return (self.modelType, self.name, self.collectionInfo)
+        return (self.modelType, self.name, self.collectionInfo, self.modelInfo)
 
 
     def __setstate__(self, state):
-        self.modelType, self.name, self.collectionInfo = state
+        self.modelType, self.name, self.collectionInfo, self.modelInfo = state
 
 
     def save(self):
         output = open(self.model_path + '.pkl', 'wb')
         pickle.dump(self, output)
-        self.word_embedding.wv.save(self.model_path)
+        self.word_embedding.wv.save_word2vec_format(self.model_path)
 
 
     def hasWord(self, word):
