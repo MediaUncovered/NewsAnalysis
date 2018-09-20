@@ -4,6 +4,7 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 import pickle
 import numpy as np
 from gensim.models import Word2Vec, FastText, KeyedVectors
+from ethically.we import BiasWordsEmbedding
 
 import os
 import csv
@@ -161,6 +162,12 @@ class Model:
         wordAttributeSimTarget1 = [self.mapWordOnAxis(target, attributes1, attributes2) for target in targets1]
         wordAttributeSimTarget2 = [self.mapWordOnAxis(target, attributes1, attributes2) for target in targets2]
         return np.sum(wordAttributeSimTarget1) - np.sum(wordAttributeSimTarget2)
+
+
+    def generate_analogies(self, w1, w2, restrict_vocab=5000):
+        biasObject = BiasWordsEmbedding(self.word_embedding)
+        biasObject._identify_direction(w1, w2, [w1, w2], method='single')
+        return biasObject.generate_analogies(restrict_vocab=restrict_vocab)
 
 
     def visualise(self):

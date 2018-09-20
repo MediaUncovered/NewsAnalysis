@@ -4,7 +4,7 @@ from newsAnalysis.Model import Model
 from newsAnalysis.createDatabase import createDatabase
 
 name = 'Moscow_Times_' + str(config.NO_DOCS)
-model_type = 'fasttext'
+model_type = 'word2vec'
 
 data_path ='./data/' + name + '.csv'
 
@@ -22,7 +22,11 @@ else:
     model.evaluate()
     model.save()
 
-similarWords = model.word_embedding.wv.similar_by_word('apple')
+    model_path = model.model_path
+    model = model.load(model_path=model_path)
+
+
+similarWords = model.word_embedding.wv.similar_by_word('negative')
 print(similarWords)
 
-path = '../explorer-server/models/model'
+analogies = model.generate_analogies('she', 'he', 1000)
