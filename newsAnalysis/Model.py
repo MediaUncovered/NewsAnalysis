@@ -55,6 +55,12 @@ class Model:
         ''' evaluates the semantic concepts a Word2Vec model has learned based on analogies, e.g. sister:brother :: daughter:son, in specific categories (e.g. currencies, verb forms, family, country capitals, etc.) '''
         with open('newsAnalysis/questions-words.txt', 'r') as evaluationFile:
             self.accuracy = self.word_embedding.wv.accuracy(evaluationFile)
+        correctAnalogies = [len(result['correct']) for result in self.accuracy]
+        totalAnalogies = [len(result['correct'] + result['incorrect']) for result in self.accuracy]
+        for ind in range(len(self.accuracy)):
+            self.accuracy[ind]['nr_correct'] = correctAnalogies[ind]
+            self.accuracy[ind]['nr_total'] = totalAnalogies[ind]
+
 
 
     def vectors2Bytes(self):
@@ -104,11 +110,11 @@ class Model:
 
 
     def __getstate__(self):
-        return (self.modelType, self.name, self.collectionInfo, self.modelInfo)
+        return (self.modelType, self.name, self.collectionInfo, self.modelInfo, self.accuracy)
 
 
     def __setstate__(self, state):
-        self.modelType, self.name, self.collectionInfo, self.modelInfo = state
+        self.modelType, self.name, self.collectionInfo, self.modelInfo, self.accuracy = state
 
 
     def save(self):
