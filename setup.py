@@ -21,5 +21,6 @@ setup(
         "numpy==1.14.2",
         "matplotlib==2.0.2",
         "nose==1.3.7",
+        "ethically==0.0.2",
     ],
 )
