@@ -3,9 +3,14 @@
 Handles transport of big data for analysis
 '''
 from newsAnalysis.datastore.model import Article
+from newsAnalysis.datastore.model import Source
 import unicodecsv as csv
 import os
 
+
+def get_sources(session):
+    sources = session.query(Source).all()
+    return dict([(source.name, source.id) for source in sources])
 
 def download_articles_to_file(session, file_path, source_id=1, limit=None):
     '''
@@ -19,7 +24,6 @@ def download_articles_to_file(session, file_path, source_id=1, limit=None):
     limit : Integer
         The maximum amount of articles to be downloaded
     '''
-
     # Find the last id to resume with
     print ("detecting latest id")
     downloaded_articles_count = 0

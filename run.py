@@ -3,14 +3,17 @@ import newsAnalysis.config as config
 from newsAnalysis.Model import Model
 from newsAnalysis.createDatabase import createDatabase
 
-name = 'Moscow_Times_' + str(config.NO_DOCS)
+NEWSPAPERS = ['New York Times', 'Fox News', 'Guardian', 'Atlantic', 'Moscow Times', 'Breitbart']
+newspaper = 'Fox News'
+
+name =  newspaper + '_' + str(config.NO_DOCS)
 model_type = 'word2vec'
+#model_type = 'fasttext'
 
 data_path ='./data/' + name + '.csv'
 
-
 if not os.path.exists(data_path):
-    createDatabase(config.DB, config.HOST, config.PORT, config.USER, config.PASSWORD, data_path, config.NO_DOCS)
+    createDatabase(config.DB, config.HOST, config.PORT, config.USER, config.PASSWORD, data_path, config.NO_DOCS, newspaper)
 
 model = Model(name, model_type)
 
