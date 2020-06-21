@@ -1,7 +1,7 @@
 sqlalchemy==1.1.11
 sqlalchemy-utils==0.32.14
 gensim>=3.7.0
-nltk==3.2.4
+nltk==3.4.5
 unicodecsv==0.14.1
 psycopg2==2.7.1
 numpy>=1.15
