@@ -22,3 +22,7 @@ class testModel(unittest.TestCase):
         self.assertTrue(self.model.hasWord('word'))
         self.assertFalse(self.model.hasWord('unkown_word'))
 
+    def test_generateAnalogies(self):
+        analogies = self.model.generate_analogies('moscow', 'russia')
+        self.assertTrue(len(analogies) > 0)
+
