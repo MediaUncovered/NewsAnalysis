@@ -14,13 +14,13 @@ setup(
     install_requires=[
         "sqlalchemy==1.1.11",
         "sqlalchemy-utils==0.32.14",
-        "gensim==3.4.0",
-        "nltk == 3.2.4",
+        "gensim>=3.7",
+        "nltk==3.2.4",
         "unicodecsv==0.14.1",
         "psycopg2==2.7.1",
-        "numpy==1.14.2",
-        "matplotlib==2.0.2",
+        "numpy>=1.15",
+        "matplotlib==2.2",
         "nose==1.3.7",
-        "ethically==0.0.2",
+        "responsibly==0.1.1",
     ],
 )
