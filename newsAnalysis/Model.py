@@ -130,6 +130,9 @@ class Model:
         else:
             return True
 
+    def filterNonVocabWords(self, word_list):
+        return [word for word in word_list if self.hasWord(word)]
+
     def getWordCount(self, word):
         if self.hasWord(word):
             return self.word_embedding.wv.vocab.get(word).count

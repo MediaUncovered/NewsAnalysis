@@ -26,3 +26,7 @@ class testModel(unittest.TestCase):
         analogies = self.model.generate_analogies('moscow', 'russia')
         self.assertTrue(len(analogies) > 0)
 
+    def test_filterNonVocabWords(self):
+        word_list = ['xxxx', 'valid', 'aeease', 'word', 'yaseiw']
+        self.assertListEqual(self.model.filterNonVocabWords(word_list),
+                             ['valid', 'word'])
