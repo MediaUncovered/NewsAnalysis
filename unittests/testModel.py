@@ -28,5 +28,6 @@ class testModel(unittest.TestCase):
 
     def test_filterNonVocabWords(self):
         word_list = ['xxxx', 'valid', 'aeease', 'word', 'yaseiw']
-        self.assertListEqual(self.model.filterNonVocabWords(word_list),
-                             ['valid', 'word'])
+        valid_words, oov = self.model.filterNonVocabWords(word_list)
+        self.assertListEqual(valid_words, ['valid', 'word'])
+        self.assertListEqual(oov, ['xxxx', 'aeease', 'yaseiw'])

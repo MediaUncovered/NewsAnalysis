@@ -131,7 +131,14 @@ class Model:
             return True
 
     def filterNonVocabWords(self, word_list):
-        return [word for word in word_list if self.hasWord(word)]
+        valid_words = []
+        oov = []
+        for word in word_list:
+            if self.hasWord(word):
+                valid_words.append(word)
+            else:
+                oov.append(word)
+        return valid_words, oov
 
     def getWordCount(self, word):
         if self.hasWord(word):
